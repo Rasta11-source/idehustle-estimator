@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SideHustle Estimator</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f6f6f6; }
+    .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    h1 { text-align: center; color: #444; }
+    label { display: block; margin-top: 15px; font-weight: bold; }
+    input, select { width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc; }
+    button { margin-top: 20px; padding: 10px 20px; background-color: #4caf50; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .result { margin-top: 30px; background: #e7f3e7; padding: 15px; border-radius: 10px; display: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>SideHustle Estimator</h1>
+    <label for="productType">Choose a product:</label>
+    <select id="productType" onchange="autoFillDefaults()">
+      <option value="bracelets">Beaded Bracelets</option>
+      <option value="candles">Candles</option>
+      <option value="tshirts">Custom T-Shirts</option>
+    </select>
+
+    <label for="units">How many units do you plan to make?</label>
+    <input type="number" id="units" value="20" />
+
+    <label for="price">Selling price per item (CAD):</label>
+    <input type="number" id="price" value="10" />
+
+    <label for="materialCost">Material cost per item (CAD):</label>
+    <input type="number" id="materialCost" value="2" />
+
+    <label for="hours">Estimated hours needed to make them:</label>
+    <input type="number" id="hours" value="5" />
+
+    <button onclick="calculate()">Estimate My Hustle</button>
+
+    <div class="result" id="resultBox">
+      <h3>💡 Your Estimate:</h3>
+      <p><strong>Total Startup Cost:</strong> <span id="startupCost"></span> CAD</p>
+      <p><strong>Estimated Revenue:</strong> <span id="revenue"></span> CAD</p>
+      <p><strong>Estimated Profit:</strong> <span id="profit"></span> CAD</p>
+      <p><strong>Break-even Point:</strong> After <span id="breakeven"></span> sales</p>
+      <p><strong>Total Time Required:</strong> <span id="hoursOut"></span> hours</p>
+    </div>
+  </div>
+
+  <script>
+    function autoFillDefaults() {
+      const product = document.getElementById('productType').value;
+      const materialInput = document.getElementById('materialCost');
+      const hoursInput = document.getElementById('hours');
+
+      if (product === 'bracelets') {
+        materialInput.value = 2;
+        hoursInput.value = 5;
+      } else if (product === 'candles') {
+        materialInput.value = 3.5;
+        hoursInput.value = 6;
+      } else if (product === 'tshirts') {
+        materialInput.value = 6;
+        hoursInput.value = 8;
+      }
+    }
+
+    function calculate() {
+      const units = parseInt(document.getElementById('units').value);
+      const price = parseFloat(document.getElementById('price').value);
+      const materialCost = parseFloat(document.getElementById('materialCost').value);
+      const hours = parseFloat(document.getElementById('hours').value);
+
+      const startupCost = materialCost * units;
+      const revenue = price * units;
+      const profit = revenue - startupCost;
+      const breakeven = Math.ceil(startupCost / price);
+
+      document.getElementById('startupCost').textContent = startupCost.toFixed(2);
+      document.getElementById('revenue').textContent = revenue.toFixed(2);
+      document.getElementById('profit').textContent = profit.toFixed(2);
+      document.getElementById('breakeven').textContent = breakeven;
+      document.getElementById('hoursOut').textContent = hours;
+
+      document.getElementById('resultBox').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
